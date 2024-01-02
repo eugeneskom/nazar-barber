@@ -7,6 +7,7 @@ import { Barber } from './types'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import BarberPage from './components/BarberPage'
 import axios from 'axios'
+import BarberList from './components/BarbersApiTest'
 
 // create a list of barbers
 // when clicking on barber open his page in another route
@@ -31,40 +32,36 @@ function App() {
                 console.log(response, 'response')
             } catch (error) {}
         }
-        getBarbers()
+        // getBarbers()
 
-        const url =
-            'http://nazar-barber.test/wp-json/barbers/v1/create_data/'
+        const url = 'http://nazar-barber.test/wp-json/barbers/v1/create_data/'
         const data = {
             key1: 'value1',
             key2: 'value2',
         }
 
-        const username = 'Eugene';
-        const appPassword = 'wN32qAffK0^viAgO#z';
-        
+        const username = 'Eugene'
+        const appPassword = 'wN32qAffK0^viAgO#z'
+
         const headers = new Headers({
             'Content-Type': 'application/json',
-            'Authorization': 'Basic ' + btoa(username + ':' + appPassword)
-        });
-        
-        fetch(url, {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify(data)
+            Authorization: 'Basic ' + btoa(username + ':' + appPassword),
         })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error('Error:', error));
 
-        setBarbers(workers)
+        // fetch(url, {
+        //     method: 'POST',
+        //     headers: headers,
+        //     body: JSON.stringify(data),
+        // })
+        //     .then((response) => response.json())
+        //     .then((data) => console.log(data))
+        //     .catch((error) => console.error('Error:', error))
+
+        // setBarbers(workers)
         return () => {}
     }, [])
 
-    const setAppt = (workerId: number, slotId: number) => {
-        // will create api request to set an appointment to the worker
-        console.log('setAppt', { workerId, slotId })
-    }
+
 
     return (
         <>
@@ -76,7 +73,9 @@ function App() {
                     <Route
                         path="/"
                         element={
-                            <ul className="workers flex justify-between mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 py-3">
+                            <>
+                                <BarberList />
+                            {/* <ul className="workers flex justify-between mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 py-3">
                                 {barbers.map((worker) => {
                                     const workerAppntmts = appointments.filter(
                                         (app) => app.workerId !== worker.id
@@ -90,21 +89,19 @@ function App() {
                                         <BarberCard
                                             barber={worker}
                                             appointment={workerAppntmts}
-                                            setAppt={setAppt}
                                             key={worker.id}
                                         />
                                     )
                                 })}
-                            </ul>
+
+                            </ul> */}
+                            </>
                         }
                     />
                     <Route
                         path="/barber/:id"
                         element={
                             <BarberPage
-                                barbers={barbers}
-                                appointments={appointments}
-                                setAppt={setAppt}
                             />
                         }
                     />
