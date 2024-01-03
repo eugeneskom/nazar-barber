@@ -20,7 +20,7 @@ function BarberAppmts({
     const filteredAppointments = appointments.filter((appt) => {
         const date1 = new Date(appt.date)
         console.log(
-            new Date(appt.date.split('T')[0]),
+            new Date(appt.date?.split('T')[0]),
             'new Date(appt.date)',
             submitData?.apptDate,
             'submitData?.apptDate'
@@ -32,7 +32,11 @@ function BarberAppmts({
         const date2Year = submitData?.apptDate?.getFullYear()
         const date2Month = submitData?.apptDate?.getMonth()
         const date2Day = submitData?.apptDate?.getDate()
-        return date1Year === date2Year && date1Month === date2Month && date1Day === date2Day;
+        return (
+            date1Year === date2Year &&
+            date1Month === date2Month &&
+            date1Day === date2Day
+        )
     })
     console.log(filteredAppointments, 'filteredAppointments')
     useEffect(() => {
@@ -48,21 +52,33 @@ function BarberAppmts({
         return () => {}
     }, [])
 
+    const checkIfBooked = (time: string) => {
+        const isBooked = filteredAppointments.some((appt) => appt.time === time)
+        return isBooked
+    }
+
+    const handleTimeSelect = (time: string) => {
+        const isTimeBooked = checkIfBooked(time)
+        if (isTimeBooked) return
+        setSubmitData((prev: SubmitData) => ({
+            ...prev,
+            time: time,
+        }))
+    }
+
     return (
         <ul className=" text-white flex gap-1">
             {barberSlots.map((slot) => (
                 <li className="" key={slot.id}>
                     {/* <p>Date: {slot.date}</p> */}
                     <button
+                        type="button"
                         className={`btn p-3  bg-green-400 cursor-pointer focus:bg-green-600 ${
                             submitData.time === slot.time ? 'bg-green-600' : ''
-                        }`}
-                        onClick={() =>
-                            setSubmitData((prev: SubmitData) => ({
-                                ...prev,
-                                time: slot.time,
-                            }))
                         }
+                        ${checkIfBooked(slot.time) ? 'bg-red-600 disabled-button' : ''}
+                        `}
+                        onClick={() => handleTimeSelect(slot.time)}
                     >
                         <p>Time: {slot.time}</p>
                     </button>

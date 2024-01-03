@@ -1,7 +1,9 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 
 function Header() {
+    const location = useLocation()
+    console.log('location',location.pathname, location.pathname === '/')
     return (
         <nav className="bg-gray-800">
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -16,11 +18,7 @@ function Header() {
                         >
                             <span className="absolute -inset-0.5" />
                             <span className="sr-only">Open main menu</span>
-                            {/*
-      Icon when menu is closed.
 
-      Menu open: "hidden", Menu closed: "block"
-    */}
                             <svg
                                 className="block h-6 w-6"
                                 fill="none"
@@ -35,11 +33,7 @@ function Header() {
                                     d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
                                 />
                             </svg>
-                            {/*
-      Icon when menu is open.
 
-      Menu open: "block", Menu closed: "hidden"
-    */}
                             <svg
                                 className="hidden h-6 w-6"
                                 fill="none"
@@ -67,31 +61,31 @@ function Header() {
                         <div className="hidden sm:ml-6 sm:block">
                             <div className="flex space-x-4">
                                 {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-                                <a
-                                  // to="/"
-                                    className="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
-                                    aria-current="page"
+                                <NavLink
+                                    to="/"
+                                    className={`${location.pathname === '/' ? 'bg-gray-900' : ""}  text-white rounded-md px-3 py-2 text-sm font-medium`}
+                                    // aria-current="page"
                                 >
                                     Home
-                                </a>
-                                <a
-                                    href="#"
-                                    className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                                </NavLink>
+                                <NavLink
+                                    to="/admin-panel"
+                                    className={`${location.pathname === '/admin-panel' ? 'bg-gray-900' : ""} text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium`}
                                 >
-                                    About
-                                </a>
-                                <a
-                                    href="#"
+                                    Admin Panel
+                                </NavLink>
+                                <NavLink
+                                    to="/"
                                     className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                                 >
                                     Prices
-                                </a>
-                                <a
-                                    href="#"
+                                </NavLink>
+                                <NavLink
+                                    to="/"
                                     className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                                 >
                                     Calendar
-                                </a>
+                                </NavLink>
                             </div>
                         </div>
                     </div>

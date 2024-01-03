@@ -21,9 +21,9 @@ function BarberCard({ barber }: BarberProps) {
         <li className="barbers__card" key={barber.id}>
             <article>
                 <img src={barber.picture} alt={barber.name} />
-                <h1>{barber.name}</h1>
-                <p>{barber.age}</p>
-                <p>{barber.description}</p>
+                <h1>Name: {barber.name}</h1>
+                <p>Age: {barber.age}</p>
+                <p className={`barbers__description`}>BIO: {barber.description}</p>
                 <button
                     type="button"
                     className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"

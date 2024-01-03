@@ -5,6 +5,7 @@ import BarberAppmts from './BarberAppmts'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import ScheduledPopup from './ScheduledPopup'
 import axios from 'axios'
 
 interface BarberPageProps {
@@ -36,10 +37,13 @@ function BarberPage() {
     const [barbersAppts, setBarbersAppts] = useState<WorkerSchedule | null>(
         null
     )
-
     const [isApptOpen, setIsApptOpen] = useState(false)
     const toggleApptmts = () => {
         setIsApptOpen(!isApptOpen)
+        const body = document.querySelector('body');
+        if(body) {
+            body.classList.add("dark:bg-gray-900", "antialiased", "dark:text-white" )
+        }
     }
     const navigateHome = () => {
         navigate('/')
@@ -93,6 +97,9 @@ function BarberPage() {
                     time: submitData.time,
                 }
             )
+
+            toggleApptmts()
+            
             console.log(response, 'response handleSetAppointment')
         } catch (error) {}
     }
@@ -126,6 +133,7 @@ function BarberPage() {
                 </button>
                 {selectedBarber ? (
                     <article onClick={() => {}}>
+                        <img src={selectedBarber.picture} alt={selectedBarber.name} className='rounded-full' />
                         <h1>{selectedBarber.name}</h1>
                         <p>{selectedBarber.description}</p>
                         <p>{selectedBarber.age}</p>
@@ -219,6 +227,8 @@ function BarberPage() {
                 </button>
                 {}
             </form>
+
+            <ScheduledPopup isOpen={isApptOpen} submitData={submitData} toggleApptmts={toggleApptmts}/>
         </section>
     )
 }

@@ -36,3 +36,21 @@
         transform: rotate(360deg);
     }
 }
+
+.barbers__description {
+    max-height: calc(4 * 1.2em); /* 1.2em is the line height, adjust as needed */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre-line;
+}
+
+.shedule-modal-active{
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.disabled-button {
+    pointer-events: none;
+    /* You can also add styles to visually indicate that the button is disabled */
+    /* opacity: 0.6; Reduce opacity to make it look disabled */
+    cursor: not-allowed; /* Change cursor to indicate it's not clickable */
+  }
