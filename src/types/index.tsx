@@ -9,7 +9,7 @@ export interface Barber {
     picture: string
     availability: boolean
     age: string
-    appointments: Appointment[]
+    // appointments: Appointment[]
 }
 
 export interface Appointment {

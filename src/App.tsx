@@ -59,7 +59,7 @@ function App() {
                 <Routes>
                     <Route index path="/" element={<BarberList barbers={barbers} loading={loading}/>} />
                     <Route path="/admin-panel" element={<AdminPanel />} />
-                    <Route path="/barber/:id" element={<BarberPage />} />
+                    <Route path="/barber/:id" element={<BarberPage barbers={barbers}/>} />
                 </Routes>
             </Router>
         </>
