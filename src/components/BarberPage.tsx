@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Barber, WorkerSchedule, Appointment } from '../types'
 import { useParams, useNavigate } from 'react-router-dom'
-import BarberAppmts from './BarberAppmts'
+import BarberAppmts from './appointments/BarberAppmts'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
@@ -61,11 +61,11 @@ function BarberPage({ barbers }: BarberPageProps) {
         const getBarbersAppts = async (id: number) => {
             try {
                 const response = await axios.get(
-                    `http://nazar-barber.test/wp-json/myapi/v1/barbers/${id}`
+                    `http://barber-nazar.eugeneskom.com/wp-json/myapi/v1/barbers/${id}`
                 )
 
                 if (response.status === 200 && response.data) {
-                    setBarbersAppts(response.data.appointments)
+                    setBarbersAppts(response.data.appointments || [])
                 }
                 // setSelectedBarber(response.data)
                 console.log(response, 'response')
@@ -95,7 +95,7 @@ function BarberPage({ barbers }: BarberPageProps) {
 
         try {
             const response = axios.post(
-                `http://nazar-barber.test/wp-json/myapi/v1/add-appointment`,
+                `http://barber-nazar.eugeneskom.com/wp-json/myapi/v1/add-appointment`,
                 {
                     id: Number(id),
                     customer:
@@ -104,6 +104,11 @@ function BarberPage({ barbers }: BarberPageProps) {
                         submitData.customerLastName,
                     date: submitData.apptDate,
                     time: submitData.time,
+                },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${'dca42d531e297ac80e48f4077369a8cf-94b2397a-6b7f-4cb2-9fbd-b990cfd554d2'}`,
+                    },
                 }
             )
 
@@ -114,7 +119,7 @@ function BarberPage({ barbers }: BarberPageProps) {
     }
 
     return (
-        <section className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <section className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full">
             <button
                 type="button"
                 onClick={navigateHome}
@@ -159,7 +164,7 @@ function BarberPage({ barbers }: BarberPageProps) {
                 onSubmit={handleSetAppointment}
                 className=""
             >
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <LocalizationProvider dateAdapter={AdapterDayjs} >
                     <DatePicker
                         value={submitData.apptDate}
                         onChange={(date) => {
@@ -178,7 +183,7 @@ function BarberPage({ barbers }: BarberPageProps) {
                 {
                     // isApptOpen && barbersAppts
 
-                    submitData.apptDate && barbersAppts.length > 0 && (
+                    submitData.apptDate &&(
                         <BarberAppmts
                             appointments={barbersAppts}
                             setSubmitData={setSubmitData}
@@ -188,7 +193,7 @@ function BarberPage({ barbers }: BarberPageProps) {
                     )
                 }
 
-                <label className="block text-gray-700 text-sm font-bold mb-2 mt-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2 mt-4 w-1/2">
                     <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         type="text "
@@ -202,7 +207,7 @@ function BarberPage({ barbers }: BarberPageProps) {
                         }
                     />
                 </label>
-                <label className="block text-gray-700 text-sm font-bold mb-2">
+                <label className="block text-gray-700 text-sm font-bold mb-2 w-1/2">
                     <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         type="text "
@@ -216,7 +221,7 @@ function BarberPage({ barbers }: BarberPageProps) {
                         }
                     />
                 </label>
-                <label className="block text-gray-700 text-sm font-bold mb-2">
+                <label className="block text-gray-700 text-sm font-bold mb-2 w-1/2">
                     <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         type="number"
