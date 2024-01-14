@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { Barber, WorkerSchedule, Appointment } from '../types'
+import { Barber, Appointment } from '../../types'
 import { useParams, useNavigate } from 'react-router-dom'
-import BarberAppmts from './appointments/BarberAppmts'
+import BarberAppmts from '../appointments/BarberAppmts'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import ScheduledPopup from './ScheduledPopup'
+import ScheduledPopup from '../ScheduledPopup'
 import axios from 'axios'
-import { PhoneInputComponent } from './PhoneInput'
+import { PhoneInputComponent } from '../PhoneInput'
+import BarberInfo from './BarberInfo'
 
 interface BarberPageProps {
     barbers: Barber[]
-    // appointments: Appointment[]
 }
 
 export interface SubmitData {
@@ -161,7 +161,9 @@ function BarberPage({ barbers }: BarberPageProps) {
                 </svg>
                 <span>Go back</span>
             </button>
-            {selectedBarber ? (
+
+            <BarberInfo barber={selectedBarber} />
+            {/* {selectedBarber ? (
                 <article onClick={() => {}}>
                     <img
                         src={selectedBarber.picture}
@@ -179,7 +181,7 @@ function BarberPage({ barbers }: BarberPageProps) {
                 </article>
             ) : (
                 ''
-            )}
+            )} */}
             <form onSubmit={handleSetAppointment} className="">
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker

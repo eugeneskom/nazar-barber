@@ -1,6 +1,6 @@
 // import { useState } from 'react';
 import { PhoneInput } from 'react-international-phone';
-import { SubmitData } from './BarberPage';
+import { SubmitData } from './barber-page/BarberPage';
 import 'react-international-phone/style.css';
 interface PhoneInputProps {
     setSubmitData: (data: any) => void;

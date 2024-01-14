@@ -10,7 +10,7 @@ import {
     Route,
     useRoutes,
 } from 'react-router-dom'
-import BarberPage from './components/BarberPage'
+import BarberPage from './components/barber-page/BarberPage'
 import axios from 'axios'
 import BarberList from './components/BarberList'
 import AdminPanel from './components/admin-panel/AdminPanel'

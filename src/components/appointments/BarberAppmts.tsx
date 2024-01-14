@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { WorkerSchedule, TimeSlot, Appointment } from '../../types'
 import { slots } from '../../data'
-import { SubmitData } from '../BarberPage'
+import { SubmitData } from '../barber-page/BarberPage'
 interface BarberAppmtsProps {
     appointments: Appointment[]
     workerId: number | undefined
@@ -80,7 +80,7 @@ function BarberAppmts({
     const groupedBarberSlots = GroupByTime(barberSlots)
 
     return (
-        <ul className="text-white mt-5">
+        <ul className="text-white mt-5 ">
             {Object.entries(groupedBarberSlots).map(([timeOfDay, slots]) => (
                 <li key={timeOfDay} className='mb-5'>
                     <h2 className='text-slate-800 text-4xl mb-2'>{timeOfDay}</h2>

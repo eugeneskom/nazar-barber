@@ -1,5 +1,5 @@
 import React from 'react'
-import { SubmitData } from './BarberPage'
+import { SubmitData } from './barber-page/BarberPage'
 
 type ScheduledPopupProps = {
     isOpen: boolean
