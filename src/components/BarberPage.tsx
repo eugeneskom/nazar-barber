@@ -7,6 +7,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import ScheduledPopup from './ScheduledPopup'
 import axios from 'axios'
+import { PhoneInputComponent } from './PhoneInput'
 
 interface BarberPageProps {
     barbers: Barber[]
@@ -104,10 +105,11 @@ function BarberPage({ barbers }: BarberPageProps) {
                         submitData.customerLastName,
                     date: submitData.apptDate,
                     time: submitData.time,
+                    customerPhone: submitData.phone,
                 },
                 {
                     headers: {
-                        'Authorization': `Bearer ${'dca42d531e297ac80e48f4077369a8cf-94b2397a-6b7f-4cb2-9fbd-b990cfd554d2'}`,
+                        Authorization: `Bearer ${'dca42d531e297ac80e48f4077369a8cf-94b2397a-6b7f-4cb2-9fbd-b990cfd554d2'}`,
                     },
                 }
             )
@@ -160,13 +162,11 @@ function BarberPage({ barbers }: BarberPageProps) {
             ) : (
                 ''
             )}
-            <form
-                onSubmit={handleSetAppointment}
-                className=""
-            >
-                <LocalizationProvider dateAdapter={AdapterDayjs} >
+            <form onSubmit={handleSetAppointment} className="">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                         value={submitData.apptDate}
+                        disablePast={true}
                         onChange={(date) => {
                             if (date !== null) {
                                 const jsDate = new Date(date) // Convert to a JavaScript Date object
@@ -183,7 +183,7 @@ function BarberPage({ barbers }: BarberPageProps) {
                 {
                     // isApptOpen && barbersAppts
 
-                    submitData.apptDate &&(
+                    submitData.apptDate && (
                         <BarberAppmts
                             appointments={barbersAppts}
                             setSubmitData={setSubmitData}
@@ -222,7 +222,7 @@ function BarberPage({ barbers }: BarberPageProps) {
                     />
                 </label>
                 <label className="block text-gray-700 text-sm font-bold mb-2 w-1/2">
-                    <input
+                    {/* <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         type="number"
                         placeholder="Enter your phone number"
@@ -233,6 +233,10 @@ function BarberPage({ barbers }: BarberPageProps) {
                                 phone: e.target.value,
                             }))
                         }
+                    /> */}
+                    <PhoneInputComponent
+                        setSubmitData={setSubmitData}
+                        submitData={submitData}
                     />
                 </label>
                 <button
