@@ -86,13 +86,31 @@ function BarberPage({ barbers }: BarberPageProps) {
         return () => {}
     }, [id, barbers])
 
+    const validateForm = (data: SubmitData) => {
+        const { apptDate, customerName, customerLastName, phone } = data
+        if (
+            apptDate === null ||
+            customerName === '' ||
+            customerLastName === '' ||
+            phone.length < 12
+        ) {
+            return false
+        }
+        return true
+    }
+
     const handleSetAppointment = (
         e: React.FormEvent<HTMLFormElement>,
         time?: string
     ) => {
         e.preventDefault()
 
+        const isFormValid = validateForm(submitData);
+        console.log('isFormValid', isFormValid)
+
         console.log(submitData, 'submitData')
+
+        if (!isFormValid) return
 
         try {
             const response = axios.post(
