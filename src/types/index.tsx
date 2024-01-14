@@ -9,7 +9,7 @@ export interface Barber {
     picture: string
     available: boolean
     age: string
-    // appointments: Appointment[]
+    appointments?: Appointment[]
 }
 
 export interface Appointment {
@@ -17,7 +17,8 @@ export interface Appointment {
   date: string
   time: string
   customer: string
-  barberName?: string
+  // barberName?: string
+  // barberAvatar?: string
 }
 
 export interface TimeSlot {

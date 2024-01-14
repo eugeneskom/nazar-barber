@@ -19,12 +19,12 @@ function BarberAppmts({
 
     const filteredAppointments = appointments.filter((appt) => {
         const date1 = new Date(appt.date)
-        console.log(
-            new Date(appt.date?.split('T')[0]),
-            'new Date(appt.date)',
-            submitData?.apptDate,
-            'submitData?.apptDate'
-        )
+        // console.log(
+        //     new Date(appt.date?.split('T')[0]),
+        //     'new Date(appt.date)',
+        //     submitData?.apptDate,
+        //     'submitData?.apptDate'
+        // )
         const date1Year = date1?.getFullYear()
         const date1Month = date1?.getMonth()
         const date1Day = date1?.getDate()
