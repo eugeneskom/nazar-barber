@@ -9,6 +9,7 @@ import ScheduledPopup from '../ScheduledPopup'
 import axios from 'axios'
 import { PhoneInputComponent } from '../PhoneInput'
 import BarberInfo from './BarberInfo'
+import { TextField } from '@mui/material'
 
 interface BarberPageProps {
     barbers: Barber[]
@@ -27,10 +28,17 @@ interface BarberPageProps {
     barbers: Barber[]
 }
 
+export interface FormValidationProps{
+    apptDate: boolean
+    customerName: boolean
+    customerLastName: boolean
+    phone: boolean
+    time: boolean
+}
 function BarberPage({ barbers }: BarberPageProps) {
     const { id } = useParams()
     const navigate = useNavigate()
-    const [submitData, setSubmitData] = useState({
+    const [submitData, setSubmitData] = useState<SubmitData>({
         apptDate: null,
         customerName: '',
         customerLastName: '',
@@ -38,9 +46,18 @@ function BarberPage({ barbers }: BarberPageProps) {
         time: '',
         id: id,
     } as SubmitData)
+    const [formValidation, setFormValidation] = useState<FormValidationProps>({
+        apptDate: false,
+        customerName: false,
+        customerLastName: false,
+        phone: false,
+        time: false,
+    })
     const [selectedBarber, setSelectedBarber] = useState<Barber | null>(null)
     const [barbersAppts, setBarbersAppts] = useState<Appointment[] | []>([])
     const [isApptOpen, setIsApptOpen] = useState(false)
+
+    console.log('formValidation',formValidation)
     const toggleApptmts = () => {
         setIsApptOpen(!isApptOpen)
         const body = document.querySelector('body')
@@ -72,6 +89,7 @@ function BarberPage({ barbers }: BarberPageProps) {
                 console.log(response, 'response')
             } catch (error) {}
         }
+
         getBarbersAppts(+id)
 
         // filtering barbers to show the curren barber by id
@@ -86,8 +104,33 @@ function BarberPage({ barbers }: BarberPageProps) {
         return () => {}
     }, [id, barbers])
 
+    const handleSelectDate = (date: Date | null) => {
+        if (date !== null) {
+            const jsDate = new Date(date) // Convert to a JavaScript Date object
+            setSubmitData((prev) => ({
+                ...prev,
+                apptDate: jsDate,
+            }))
+
+            setFormValidation((prev) => ({
+                ...prev,
+                apptDate: false,
+            }))
+        }
+    }
+
     const validateForm = (data: SubmitData) => {
-        const { apptDate, customerName, customerLastName, phone } = data
+        const { apptDate, customerName, customerLastName, phone,time } = data
+
+        setFormValidation((prev) => ({
+            ...prev,
+            apptDate: apptDate !== null,
+            customerName: customerName == '',
+            customerLastName: customerLastName == '',
+            phone: phone.length >= 12,
+            time: time !== '',
+        }))
+
         if (
             apptDate === null ||
             customerName === '' ||
@@ -105,7 +148,7 @@ function BarberPage({ barbers }: BarberPageProps) {
     ) => {
         e.preventDefault()
 
-        const isFormValid = validateForm(submitData);
+        const isFormValid = validateForm(submitData)
         console.log('isFormValid', isFormValid)
 
         console.log(submitData, 'submitData')
@@ -163,43 +206,21 @@ function BarberPage({ barbers }: BarberPageProps) {
             </button>
 
             <BarberInfo barber={selectedBarber} />
-            {/* {selectedBarber ? (
-                <article onClick={() => {}}>
-                    <img
-                        src={selectedBarber.picture}
-                        alt={selectedBarber.name}
-                        className="rounded-full h-40 w-40 mb-5"
-                    />
-                    <h1 className="mb-5">
-                        <span>Name:</span> {selectedBarber.name}
-                    </h1>
-                    <p className="mb-5">
-                        <span className="block">Biography:</span>{' '}
-                        {selectedBarber.description}
-                    </p>
-                    <p className="mb-5">Age: {selectedBarber.age}</p>
-                </article>
-            ) : (
-                ''
-            )} */}
+
             <form onSubmit={handleSetAppointment} className="">
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                         value={submitData.apptDate}
-                        disablePast={true}
-                        onChange={(date) => {
-                            if (date !== null) {
-                                const jsDate = new Date(date) // Convert to a JavaScript Date object
-                                setSubmitData((prev) => ({
-                                    ...prev,
-                                    apptDate: jsDate,
-                                }))
-                            }
-                        }}
+                        disablePast={true} // disable past dates
+                        onChange={handleSelectDate}
                         label="Select date"
                     />
                 </LocalizationProvider>
-
+                {formValidation.apptDate && (
+                    <p className="text-red-400">
+                        Please select the date
+                    </p>
+                )}
                 {
                     // isApptOpen && barbersAppts
 
@@ -208,12 +229,12 @@ function BarberPage({ barbers }: BarberPageProps) {
                             appointments={barbersAppts}
                             setSubmitData={setSubmitData}
                             submitData={submitData}
-                            workerId={selectedBarber?.id ?? 0}
+                            formValidation={formValidation}
                         />
                     )
                 }
 
-                <label className="block text-gray-700 text-sm font-bold mb-2 mt-4 w-1/2">
+                <label className="block text-gray-700 text-sm font-bold mb-2 mt-4 w-1/2 mb-5">
                     <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         type="text "
@@ -226,8 +247,13 @@ function BarberPage({ barbers }: BarberPageProps) {
                             }))
                         }
                     />
+                    {formValidation.customerName && (
+                        <span className="text-red-400">
+                            Please enter your name
+                        </span>
+                    )}
                 </label>
-                <label className="block text-gray-700 text-sm font-bold mb-2 w-1/2">
+                <label className="block text-gray-700 text-sm font-bold  w-1/2 mb-5">
                     <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         type="text "
@@ -240,24 +266,22 @@ function BarberPage({ barbers }: BarberPageProps) {
                             }))
                         }
                     />
+                    {formValidation.customerLastName && (
+                        <span className="text-red-400">
+                            Please enter your last name
+                        </span>
+                    )}
                 </label>
                 <label className="block text-gray-700 text-sm font-bold mb-2 w-1/2">
-                    {/* <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                        type="number"
-                        placeholder="Enter your phone number"
-                        value={submitData.phone}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            setSubmitData((prev: SubmitData) => ({
-                                ...prev,
-                                phone: e.target.value,
-                            }))
-                        }
-                    /> */}
                     <PhoneInputComponent
                         setSubmitData={setSubmitData}
                         submitData={submitData}
                     />
+                    {formValidation.phone && (
+                        <span className="text-red-400">
+                            Please enter your phone number
+                        </span>
+                    )}
                 </label>
                 <button
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

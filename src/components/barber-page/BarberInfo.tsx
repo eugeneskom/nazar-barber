@@ -6,7 +6,6 @@ interface BarberInfoProps {
 }
 
 function BarberInfo({ barber }: BarberInfoProps) {
-
     if (!barber) {
         return (
             <article className="loading">
@@ -34,10 +33,7 @@ function BarberInfo({ barber }: BarberInfoProps) {
     }
 
     return (
-        <article
-            onClick={() => {}}
-            // className={`${!barber ?? "loading"}`}
-        >
+        <article>
             <img
                 src={barber.picture}
                 alt={barber.name}
@@ -52,24 +48,6 @@ function BarberInfo({ barber }: BarberInfoProps) {
             <p className="mb-5">Age: {barber.age}</p>
         </article>
     )
-
-    // ) : (
-    //     <article onClick={() => {}} className={`${!barber ? 'loading' : ''}`}>
-    //         <div className="rounded-full h-40 w-40 mb-5 avatar-placeholder"></div>
-    //         <h1 className="mb-5 barber-name-preloader">
-    //             <span>Name:</span> Name
-    //         </h1>
-    //         <p className="mb-5 barber-description-preloader">
-    //             <span className="block">Biography:</span>{' '}
-    //             {/* {barber.description} */}
-    //             Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-    //             Perferendis quia consectetur, deleniti porro perspiciatis quam
-    //             sapiente! Eos architecto fuga voluptatem incidunt, excepturi
-    //             debitis amet nulla reprehenderit odio, fugiat iusto sapiente!
-    //         </p>
-    //         <p className="mb-5 barber-age-preloader">Age: 33</p>
-    //     </article>
-    // )
 }
 
 export default BarberInfo

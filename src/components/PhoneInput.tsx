@@ -8,6 +8,7 @@ interface PhoneInputProps {
 }
 export const PhoneInputComponent = ({setSubmitData,  submitData}: PhoneInputProps) => {
   // const [phone, setPhone] = useState('');
+  
 
   return (
     <div>
@@ -15,6 +16,7 @@ export const PhoneInputComponent = ({setSubmitData,  submitData}: PhoneInputProp
         defaultCountry="ua"
         value={submitData.phone}
         onChange={(phone:string) => setSubmitData((prev:SubmitData) => ({...prev, phone: phone}))}
+        hideDropdown={true}
       />
     </div>
   );

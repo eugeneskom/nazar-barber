@@ -2,18 +2,19 @@ import React, { useEffect, useState } from 'react'
 import { WorkerSchedule, TimeSlot, Appointment } from '../../types'
 import { slots } from '../../data'
 import { SubmitData } from '../barber-page/BarberPage'
+import { FormValidationProps } from '../barber-page/BarberPage'
 interface BarberAppmtsProps {
     appointments: Appointment[]
-    workerId: number | undefined
     setSubmitData: (data: any) => void
     submitData: SubmitData
+    formValidation: FormValidationProps
 }
 
 function BarberAppmts({
     appointments,
-    workerId,
     setSubmitData,
     submitData,
+    formValidation,
 }: BarberAppmtsProps) {
     const [barberSlots, setBarberSlots] = useState<TimeSlot[]>(slots)
 
@@ -80,7 +81,7 @@ function BarberAppmts({
     const groupedBarberSlots = GroupByTime(barberSlots)
 
     return (
-        <ul className="text-white mt-5 ">
+        <ul className={`text-white mt-5  ${formValidation.time ? 'border-color-red' : ''}`}>
             {Object.entries(groupedBarberSlots).map(([timeOfDay, slots]) => (
                 <li key={timeOfDay} className='mb-5'>
                     <h2 className='text-slate-800 text-4xl mb-2'>{timeOfDay}</h2>
